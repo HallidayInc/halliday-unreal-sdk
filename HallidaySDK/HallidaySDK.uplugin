@@ -1,0 +1,31 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "HallidaySDK",
+	"Description": "",
+	"Category": "Other",
+	"CreatedBy": "",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "HallidaySDK",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	],
+    "Dependencies": [
+        {
+            "Name": "Web3AuthSDK",
+            "Version": "1.0",
+            "Optional": false
+        }
+    ]
+}
