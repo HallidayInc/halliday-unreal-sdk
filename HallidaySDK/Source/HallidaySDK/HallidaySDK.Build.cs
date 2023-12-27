@@ -12,7 +12,7 @@ public class HallidaySDK : ModuleRules
 		PublicIncludePaths.AddRange(
 			new string[] {
 				// ... add public include paths required here ...
-                Path.Combine(ModuleDirectory, "../ThirdParty", "secp256k1", "include"),
+                Path.Combine(ModuleDirectory, "..", "ThirdParty", "secp256k1", "include"),
 			}
 			);
 				
@@ -59,8 +59,28 @@ public class HallidaySDK : ModuleRules
 			}
 			);
    
-        PublicAdditionalLibraries.Add(
-            Path.Combine(ModuleDirectory, "../ThirdParty", "secp256k1", "lib", "libsecp256k1.a")
-        );
+        if (Target.Platform == UnrealTargetPlatform.Win64)
+        {
+            // SECP256K1 library requires this to be defined if using a static library on Windows
+            PublicDefinitions.Add("SECP256K1_STATIC");
+            
+            // Add any static public static libraries
+            PublicSystemLibraries.AddRange(
+                new string[]
+                {
+                    "BCrypt.lib"
+                }
+            );
+            
+            PublicAdditionalLibraries.Add(
+                Path.Combine(ModuleDirectory, "..", "ThirdParty", "secp256k1", "lib", "libsecp256k1.lib")
+            );
+        }
+        else
+        {
+            PublicAdditionalLibraries.Add(
+                Path.Combine(ModuleDirectory, "..", "ThirdParty", "secp256k1", "lib", "libsecp256k1.a")
+            );
+        }
 	}
 }

@@ -27,7 +27,7 @@
 static bool FillRandom(uint8_t* Data, size_t Size) {
 #if defined(_WIN32)
     NTSTATUS res = BCryptGenRandom(nullptr, Data, static_cast<ULONG>(Size), BCRYPT_USE_SYSTEM_PREFERRED_RNG);
-    return res == STATUS_SUCCESS && Size <= ULONG_MAX;
+    return BCRYPT_SUCCESS(res) && Size <= ULONG_MAX;
 #elif defined(__linux__) || defined(__FreeBSD__)
     sSize_t res = getrandom(Data, Size, 0);
     return res >= 0 && static_cast<Size_t>(res) == Size;
@@ -390,7 +390,7 @@ void AHalliday::_HandleLogin(FWeb3AuthResponse response) {
     
     // Execute the callback that was previously passed in.
     // This uses the main game thread so this must complete before moving forward.
-    AsyncTask(ENamedThreads::GameThread, [=]() {
+    AsyncTask(ENamedThreads::GameThread, [this]() {
         OnLoginCompleted.ExecuteIfBound();
     });
 }
@@ -411,7 +411,7 @@ void AHalliday::_HandleLogout() {
     _UserInfo.oAuthAccessToken = TEXT("");
     
     // Execute the callback event that was previous set.
-    AsyncTask(ENamedThreads::GameThread, [=]() {
+    AsyncTask(ENamedThreads::GameThread, [this]() {
         OnLogoutCompleted.ExecuteIfBound();
     });
 }
